@@ -14,8 +14,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Log in to Docker Hub
-     echo "${{ secrets.rahulchand9 }}" | docker login -u "${{ secrets.Rahul9898@ }}" --password-stdin
-
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build & Push Docker Image
       run: |
@@ -26,36 +25,11 @@ jobs:
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.3.17.74.228 }}
+        host: ${{ secrets.EC2_HOST }}
         username: ubuntu
-        key: ${{ secrets.MIIEpQIBAAKCAQEA4nFNNi+o6AJvWCYT2gjAKWP6GqmYFA0g1a7XZmz+pRjttMcx
-fHkWbTYZ8ZK25UmJmzh2gCx2RmLs/KslQWf+26KM28JE0N1bKFw6d7IrVf7IUi+7
-hi9tM48GHZ+SaZn/sTO9Qi56v85vuN2aUoJwzc1OI8RlG4N/aHnngpGPcXX5JNz8
-ztw2iEne2+I1nS8oy2QufJbhr9SgkrthUAmA4AtOG8q/1BYACNEaXsKri6i/7mR4
-C9BCtxWuQYTMMDG6/0pWe38cGU5RZS15K79goJF9UIa88hEwm/KMIiA0sgZy0h/o
-BznEq97LhfPrtjIvQQf1o9BfXDUVjxIuS5W/gwIDAQABAoIBAQCsj/luPL20KP7f
-Jw1jz91Y7YaQQQPS6/pEvRwLQy5/dFLZvB7bI4/SpDL7JHpam0LRViMAJGHx27uM
-BYS7plvS1roPUqmMndO1Gyu3QcDCpQnVj+iRJp1KeEkJ1CwIa8IuMSaeQ7tpZhE/
-ySisjhkWzMkqeqUuZXR3ksa5euHcbMKa1jGS4m9TLpa1SnvpY1BsTc3dlQV5l9om
-1H0mC+mOitpfGWeo7501y++u7uQg0E7v0AEfBDM/dicwLl4OonY5IwTU16GgDj40
-cfttwTZIkHcEpctKWKXaITcPQPd5rwRCwbAyH6DplJEPExPKVlQVDo6g49e+iT6V
-lgePR5ABAoGBAPwFbdERpsL3lEX4w4faWh9XPUKWjWi2fmL+Mqcy+kUQ/2bQeQDY
-9auLdSB3kMACSHU9BdIKMXx6yJLmo5wOHIM94+V5KhpAjhxp7RSpYc1LCj7HSBix
-5UUXEBdEJjvp2jwkmQxtIMmIrFX4gmAhoyYHC0WbXSemYtUj5VL7FteDAoGBAOYE
-fm2q09VzSZdUXTaHi6a00DorETuYDpPS++zh2w9IitHfobHtxvXQMTGE6LzzCG0D
-zxgslAjL3m/Cs2R7vdFZKjaDgY2zqS96VzqYuJ7c/tElGNAtrYajdGyXcdieegDw
-jXXMbIwlgvPAq6cJjjVoyGFISj+l8lVri9fL6PgBAoGAJSHHpF4ta9x+hDC63nFV
-hficlgsImr0Ish0x6WChbzup5cQhj/Zne/b4Muhq819ivaNYEDJgSC7vDnXc9Uk+
-+jdMNKs9gNCyH42b2Md8GXtM7yL9hGXxmdRkEol/+KPj+6iIxEPv6MGyYphS3UcX
-eqrfBkp11zm0piK7zxYfr3ECgYEA0rphPYWYhuAVFqACubdaeMMEVZYpNoirKkDL
-7oxIjeruyzHvSDxH3+H5f519P8YD/SPVMhd9E8X6pjcg9LjtAQOISeMW6MQlBss1
-aQiLc3eRt/gdkHOYm1XajrX8ZfFiYsP/RWGgPJENNNVaLTDy6PlzQrTg2QjmR928
-g1pbuAECgYEAgtDoWLl9WVPJDcfZ4+CTkfABSHVf6LpZbP2Ojkw5gGejGirgQ9EO
-cDCo22h0OruNvrbmYomCaB+6nf+KdAza+2ofy0vytmx5EncB+joeHwci3JCdFFpC
-344ESzwzDlIxEbeYCtRpDo2FiDsd1v0OqQft6m84gl0mioNQ1LNxRJg= }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           docker pull rahulchand9/fastapi-trade:latest
           docker stop fastapi-container || true
           docker rm fastapi-container || true
           docker run -d --restart always -p 8000:8000 --name fastapi-container rahulchand9/fastapi-trade:latest
- 
